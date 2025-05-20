@@ -13,6 +13,6 @@
         echo "you are connected";
     }else {
         echo"NOPE";
-    } */
-
+    }
+ */
 ?>
