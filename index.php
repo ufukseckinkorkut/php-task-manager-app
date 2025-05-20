@@ -10,7 +10,7 @@
    <?php
     
     include("database.php");
-
+    session_start();
     // username password values from inputs
     $username = trim($_POST["username"]);
     $password = $_POST["password"];
@@ -28,8 +28,12 @@
             $row = mysqli_fetch_assoc($result);
             $usernameData = $row["username"];
             $passwordData = $row["password"];
+            $user_id = $row["id"];
         }
      mysqli_close($conn); 
+
+      $_SESSION['username'] = $usernameData;
+      $_SESSION['user_id'] = $user_id;
 
      // login controls
      if(isset($_POST["login"])){
