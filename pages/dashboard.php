@@ -87,6 +87,12 @@
             </select>
             <br>
             <button type="submit" name="add">Add task</button>
+            <!-- show error message -->
+             <?php $errorMessage = $_SESSION['errorMessage'] ?? null; ?>
+            <?php if ($errorMessage): ?>
+                <div class="errorMessage"><?php echo $errorMessage; ?></div>
+                <?php unset($_SESSION['errorMessage']); ?>
+            <?php endif; ?>
         </form>
 <div style="text-align: right; margin-top: 30px;">
         <a href="../index.php" class="logout-btn">Logout</a>
