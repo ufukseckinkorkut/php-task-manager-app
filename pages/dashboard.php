@@ -16,30 +16,33 @@
         </h1>
         
        <h2>Your Tasks</h2>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Task</th>
-                    <th>Status</th>
-                    <th>Created At</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-    <tbody>
-        <!-- PHP will loop here and fill this part with rows -->
-         <?php
-         include("../database.php");
+    <table border="1">
+                <thead>
+                    <tr>
+                        <th>Task</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+        <tbody>
+            <!-- PHP will loop here and fill this part with rows -->
+            <?php
+            include("../database.php");
 
-        $query = "SELECT * FROM tasks"; 
-        $result = mysqli_query($conn, $query);
 
         $user_id = $_SESSION['user_id'];
+
+        $query = "SELECT * FROM tasks WHERE user_id = '$user_id'";
+        $result = mysqli_query($conn, $query);
+
+
 
         $task_name_data = "";
         $status_data = "";
 
         // fetching data from db
-     if (mysqli_num_rows($result) > 0) {
+        if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
                 echo "<tr>";
                 echo "<td>" . htmlspecialchars($row['task_name']) . "</td>";
@@ -51,10 +54,10 @@
         } else {
             echo "<tr><td colspan='4'>No tasks found.</td></tr>";
         }
-     mysqli_close($conn); 
-         ?>
-    </tbody>
-</table>
+        mysqli_close($conn);
+        ?>
+        </tbody>
+    </table>
 
  <form action="add.php" method="POST" style="margin-top:20px">
             <label for="task_name">New Task Name: </label>

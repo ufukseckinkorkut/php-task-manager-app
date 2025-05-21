@@ -8,7 +8,7 @@
 </head>
 <body>
     <?php
-
+    session_start();
     include("../database.php");
 
     // username password from inputs
@@ -19,12 +19,22 @@
         if(empty($username) || empty($password)) {
             $errorMessage = "Please fill in all fields";
         } else {
-            $sql = "INSERT INTO users (username, password) VALUES ('$username', '$password')"; 
-            mysqli_query($conn, $sql);
-            $successMessage = "Registration successful!";
+            $checkQuery = "SELECT * FROM users WHERE username = ?";
+            $stmt = mysqli_prepare($conn, $checkQuery);
+            mysqli_stmt_bind_param($stmt, "s", $username);
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
+
+            if (mysqli_num_rows($result) > 0) {
+                $errorMessage = "This username has already been taken.";
+            } else {
+                $sql = "INSERT INTO users (username, password) VALUES ('$username', '$password')";
+                mysqli_query($conn, $sql);
+                $successMessage = "Registration successful!";
+            }
         }
     }
-    
+
 
 
     ?>
