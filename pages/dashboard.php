@@ -22,7 +22,7 @@
                         <th>Task</th>
                         <th>Status</th>
                         <th>Created At</th>
-                        <th>Action</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
         <tbody>
@@ -45,8 +45,25 @@
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
                 echo "<tr>";
-                echo "<td>" . htmlspecialchars($row['task_name']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['status']) . "</td>";
+               // echo "<td>" . htmlspecialchars($row['task_name']) . "</td>";
+
+               echo "<td>
+                        <form method='POST' action='edit.php'>
+                            <input type='hidden' name='edit_task_id' value='" . $row['id'] . "'>
+                            <input type='text' name='edit_task_name' value='" . htmlspecialchars($row['task_name']) . "'>
+                            <button type='submit' name='edit_name'>Edit</button>
+                        </form>
+                    </td>";
+                echo "<td>
+                        <form method='POST' action='edit.php'>
+                            <input type='hidden' name='edit_task_id' value='" . $row['id'] . "'>
+                            <select name='statusManual'>
+                                <option value='pending'" . ($row['status'] === 'pending' ? ' selected' : '') . ">Pending</option>
+                                <option value='completed'" . ($row['status'] === 'completed' ? ' selected' : '') . ">Completed</option>
+                            </select>
+                            <button type='submit' name='edit'>Edit</button>
+                        </form>
+                    </td>";
                 echo "<td>" . $row['created_at'] . "</td>";
                 echo "<td><form method='POST' action='delete.php'><input type='hidden' name='task_id' value='" . $row['id'] . "'><button type='submit' name='delete'>Delete</button></form></td>";
                 echo "</tr>";
@@ -76,7 +93,7 @@
     </div>
 
 
-        <a href="../index.php" class="logout-btn">Go back</a>
+        <a href="../index.php" class="logout-btn">Logout</a>
 
 </body>
 </html>
