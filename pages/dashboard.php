@@ -44,29 +44,39 @@
         // fetching data from db
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
-                echo "<tr>";
-               // echo "<td>" . htmlspecialchars($row['task_name']) . "</td>";
+                $taskName = htmlspecialchars($row['task_name']);
+                $statusSelectedPending = $row['status'] === 'pending' ? 'selected' : '';
+                $statusSelectedCompleted = $row['status'] === 'completed' ? 'selected' : '';
 
-               echo "<td>
-                        <form method='POST' action='edit.php'>
-                            <input type='hidden' name='edit_task_id' value='" . $row['id'] . "'>
-                            <input type='text' name='edit_task_name' value='" . htmlspecialchars($row['task_name']) . "'>
-                            <button type='submit' name='edit_name'>Edit</button>
-                        </form>
-                    </td>";
-                echo "<td>
-                        <form method='POST' action='edit.php'>
-                            <input type='hidden' name='edit_task_id' value='" . $row['id'] . "'>
-                            <select name='statusManual'>
-                                <option value='pending'" . ($row['status'] === 'pending' ? ' selected' : '') . ">Pending</option>
-                                <option value='completed'" . ($row['status'] === 'completed' ? ' selected' : '') . ">Completed</option>
-                            </select>
-                            <button type='submit' name='edit'>Edit</button>
-                        </form>
-                    </td>";
-                echo "<td>" . $row['created_at'] . "</td>";
-                echo "<td><form method='POST' action='delete.php'><input type='hidden' name='task_id' value='" . $row['id'] . "'><button type='submit' name='delete'>Delete</button></form></td>";
-                echo "</tr>";
+                    echo "
+                    <tr>
+                        <td>
+                            <form method='POST' action='edit.php'>
+                                <input type='hidden' name='edit_task_id' value='{$row['id']}'>
+                                <input type='text' name='edit_task_name' value='{$taskName}'>
+                                <button type='submit' name='edit_name'>Edit</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form method='POST' action='edit.php'>
+                                <input type='hidden' name='edit_task_id' value='{$row['id']}'>
+                                <select name='statusManual'>
+                                    <option value='pending' {$statusSelectedPending}>Pending</option>
+                                    <option value='completed' {$statusSelectedCompleted}>Completed</option>
+                                </select>
+                                <button type='submit' name='edit'>Edit</button>
+                            </form>
+                        </td>
+                        <td>{$row['created_at']}</td>
+                        <td>
+                            <form method='POST' action='delete.php'>
+                                <input type='hidden' name='task_id' value='{$row['id']}'>
+                                <button type='submit' name='delete'>Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    ";
+
             }
         } else {
             echo "<tr><td colspan='4'>No tasks found.</td></tr>";
